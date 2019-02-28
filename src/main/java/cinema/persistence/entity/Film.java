@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 @Entity
 public class Film {
@@ -21,6 +22,24 @@ public class Film {
 	private Star director;
 	private List<Star> actors;
 	
+	public Film() {
+		super();
+	}
+	
+	
+	public Film(String title) {
+		super();
+		this.title = title;
+	}
+
+
+	public Film(String title, Short year) {
+		super();
+		this.title = title;
+		this.year = year;
+	}
+
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="num_film")
@@ -56,8 +75,9 @@ public class Film {
 		this.duration = duration;
 	}
 	
-	@ManyToOne
-	@JoinColumn(name="num_real")
+//	@ManyToOne
+//	@JoinColumn(name="num_real")
+	@Transient
 	public Star getDirector() {
 		return director;
 	}
@@ -65,11 +85,12 @@ public class Film {
 		this.director = director;
 	}
 	
-	@ManyToMany
-	@JoinTable(
-	        name = "jouer", 
-	        joinColumns =  @JoinColumn(name = "num_film") , 
-	        inverseJoinColumns =  @JoinColumn(name = "num_act")) 
+//	@ManyToMany
+//	@JoinTable(
+//	        name = "jouer", 
+//	        joinColumns =  @JoinColumn(name = "num_film") , 
+//	        inverseJoinColumns =  @JoinColumn(name = "num_act"))
+	@Transient
 	public List<Star> getActors() {
 		return actors;
 	}

@@ -9,9 +9,13 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+
 
 import cinema.dto.FilmDto;
 import cinema.service.IFilmService;
@@ -35,4 +39,10 @@ public class FilmController {
 		return filmService.findOne(id);
 	}
 
+	@PostMapping
+	@ResponseBody
+	public FilmDto createFilm(@RequestBody FilmDto film) {
+				return filmService.createFilm(film);
+		
+	}
 }

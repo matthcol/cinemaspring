@@ -16,6 +16,9 @@
 		<start-class>cinema.Application</start-class>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
+		
+		<maven-failsafe-plugin.version>2.22.1</maven-failsafe-plugin.version>
+		<maven-surefire-plugin.version>2.22.1</maven-surefire-plugin.version>
 	</properties>
 
 	<dependencies>
@@ -78,13 +81,31 @@
 			<scope>test</scope>
 		</dependency>
 		
+		<dependency>
+	        <groupId>com.h2database</groupId>
+	        <artifactId>h2</artifactId>
+	        <scope>test</scope>
+		</dependency>
 		
-
 		<dependency>
 			<groupId>org.modelmapper</groupId>
 			<artifactId>modelmapper</artifactId>
 			<version>2.3.2</version>
 		</dependency>
+		
 	</dependencies>
-	<build><finalName>cinema</finalName></build>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<!-- Spring Boot configures surefire by default, but not failsafe -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+			</plugin>
+		</plugins>
+		<finalName>cinema</finalName>
+	</build>
 </project>

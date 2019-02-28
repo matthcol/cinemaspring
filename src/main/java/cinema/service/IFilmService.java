@@ -7,4 +7,5 @@ import cinema.dto.FilmDto;
 public interface IFilmService {
 	Set<FilmDto> findAll();
 	FilmDto findOne(Integer id);
+	FilmDto createFilm(FilmDto film);
 }
