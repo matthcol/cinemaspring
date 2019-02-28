@@ -5,10 +5,14 @@ import cinema.persistence.entity.Film;
 public class FilmDto {
 	private Integer id;
 	private String title;
-	private Short year;
-	private Short duration;
+	private Integer year;
+	private Integer duration;
 	
-	public FilmDto(Integer id, String title, Short year, Short duration) {
+	public FilmDto() {
+		super();
+	}
+
+	public FilmDto(Integer id, String title, Integer year, Integer duration) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -36,19 +40,19 @@ public class FilmDto {
 		this.title = title;
 	}
 
-	public Short getYear() {
+	public Integer getYear() {
 		return year;
 	}
 
-	public void setYear(Short year) {
+	public void setYear(Integer year) {
 		this.year = year;
 	}
 
-	public Short getDuration() {
+	public Integer getDuration() {
 		return duration;
 	}
 
-	public void setDuration(Short duration) {
+	public void setDuration(Integer duration) {
 		this.duration = duration;
 	}
 	

@@ -1,26 +1,20 @@
 package cinema.persistence.entity;
 
-import java.util.List;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
+
 
 @Entity
 public class Film {
 	private Integer id;
 	private String title;
-	private Short year;
-	private Short duration;
-	private Star director;
-	private List<Star> actors;
+	private Integer year;
+	private Integer duration;
 	
 	public Film() {
 		super();
@@ -28,17 +22,22 @@ public class Film {
 	
 	
 	public Film(String title) {
-		super();
+		this();
 		this.title = title;
 	}
 
 
-	public Film(String title, Short year) {
-		super();
-		this.title = title;
+	public Film(String title, Integer year) {
+		this(title);
 		this.year = year;
 	}
 
+	
+
+	public Film(String title, Integer year, Integer duration) {
+		this(title, year);
+		this.duration = duration;
+	}
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -59,43 +58,32 @@ public class Film {
 	}
 	
 	@Column(name="annee")
-	public Short getYear() {
+	public Integer getYear() {
 		return year;
 	}
-	public void setYear(Short year) {
+	public void setYear(Integer year) {
 		this.year = year;
 	}
 	
 	@Column(name="duree")
-	public Short getDuration() {
+	public Integer getDuration() {
 		return duration;
 	}
 
-	public void setDuration(Short duration) {
+	public void setDuration(Integer duration) {
 		this.duration = duration;
 	}
 	
-//	@ManyToOne
-//	@JoinColumn(name="num_real")
-	@Transient
-	public Star getDirector() {
-		return director;
+	@Override
+	public String toString() {
+		return new StringBuilder(this.getTitle())
+				.append(" (")
+				.append(this.getId())
+				.append(", ")
+				.append(this.getYear())
+				.append(", ")
+				.append(this.getDuration())
+				.append("mn)")
+				.toString();
 	}
-	public void setDirector(Star director) {
-		this.director = director;
-	}
-	
-//	@ManyToMany
-//	@JoinTable(
-//	        name = "jouer", 
-//	        joinColumns =  @JoinColumn(name = "num_film") , 
-//	        inverseJoinColumns =  @JoinColumn(name = "num_act"))
-	@Transient
-	public List<Star> getActors() {
-		return actors;
-	}
-	public void setActors(List<Star> actors) {
-		this.actors = actors;
-	}
-
 }

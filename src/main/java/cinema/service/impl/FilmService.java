@@ -25,13 +25,16 @@ public class FilmService implements IFilmService {
 	@Override
 	public Set<FilmDto> findAll() {
 		return DtoUtils.setFromEntityStream(
-				filmRepo.findAll().stream(), 
-				FilmDto::new);
+				filmRepo.findAll().stream(),
+				mapper,
+				FilmDto.class);
 	}
 
 	@Override
 	public FilmDto findOne(Integer id) {
-		return DtoUtils.dtoFromEntity(filmRepo.findOne(id), FilmDto::new);
+		return mapper.map(
+				filmRepo.findOne(id), 
+				FilmDto.class);
 	}
 
 	@Override
