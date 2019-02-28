@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import cinema.assertions.FilmAssertions;
+
 import cinema.persistence.entity.Film;
 
 
