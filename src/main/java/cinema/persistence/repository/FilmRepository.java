@@ -10,5 +10,7 @@ public interface FilmRepository extends JpaRepository<Film, Integer>{
 	
 	Set<Film> findByTitle(String title);
 	Set<Film> findByTitleAndYear(String title, Integer year);
+	Set<Film> findByDurationGreaterThanEqual(Integer duration);
+	Set<Film> findByDurationLessThanEqual(Integer duration);
 
 }
