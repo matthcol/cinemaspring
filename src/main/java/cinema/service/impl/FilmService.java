@@ -3,6 +3,8 @@ package cinema.service.impl;
 import java.util.Set;
 
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.jms.support.converter.MessageType;
 
 import cinema.dto.FilmDto;
+import cinema.controller.FilmController;
 import cinema.dto.DtoUtils;
 import cinema.persistence.entity.Film;
 import cinema.persistence.repository.FilmRepository;
@@ -21,6 +24,9 @@ import cinema.service.IFilmService;
 @Service
 @Transactional
 public class FilmService implements IFilmService {
+
+	Logger logger = LoggerFactory.getLogger(FilmService.class);
+	
 	@Autowired
 	private ModelMapper mapper;
 	
@@ -48,12 +54,15 @@ public class FilmService implements IFilmService {
 	@Override
 	public FilmDto createFilm(FilmDto film) {
 		Film filmEntity = mapper.map(film, Film.class); 
-		jmsTemplate.convertAndSend("FILM",film);
-		return mapper.map(
+		FilmDto filmSaved =  mapper.map(
 				filmRepo.save(filmEntity), 
 				FilmDto.class);
+		jmsTemplate.convertAndSend("FILM",filmSaved);
+		logger.info("Film sent to JMS:" + filmSaved);
+		return filmSaved;
 	}
 	
+// Uncomment this block to send film as a text json message
 	@Bean // Serialize message content to json using TextMessage
     public MessageConverter jacksonJmsMessageConverter() {
         MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();

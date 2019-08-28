@@ -1,8 +1,16 @@
 package cinema.dto;
 
+import java.io.Serializable;
+
 import cinema.persistence.entity.Film;
 
-public class FilmDto {
+public class FilmDto implements Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1120769420933840859L;
+	
 	private Integer id;
 	private String title;
 	private Integer year;
