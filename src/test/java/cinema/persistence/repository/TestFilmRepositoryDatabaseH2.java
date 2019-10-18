@@ -1,15 +1,13 @@
 package cinema.persistence.repository;
 
-//import static org.junit.Assert.*;
-import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
 
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -17,12 +15,10 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import cinema.persistence.entity.Film;
 
 
-@RunWith(SpringRunner.class)  // for Junit 4 only
 @DataJpaTest // imply H2, disable full auto-config, keep only jpa part and rollback transactions
 //@AutoConfigureTestDatabase(replace=Replace.NONE) // don't replace mysql with h2
 //@ActiveProfiles("test")  	// with AutoConfigureTestDatabase/replace/None 
@@ -33,49 +29,44 @@ public class TestFilmRepositoryDatabaseH2 {
 
 	@Autowired
 	FilmRepository filmRepo;
-	
-	// **********************************************************************
-	// use classic entityManager initialized from configuration application
-	//@Autowired
-	//EntityManager entityManager;
-
-	// **** ^^^^^^^^^^^^^  versus    vvvvvvvvvvvvvvvvvv  ****
-	
+		
 	// use special test H2 entityManager different from configuration application
 	@Autowired
 	TestEntityManager entityManager;
-	// *************************************************************************
-	
 	
 	@Test
 	public void testFindOne() {
 		//given
-		Film film = new Film("Star Wars", 1977, 121);
-		entityManager.persist(film);
+		var title = "Star Wars";
+		Integer year = 1977;
+		Integer duration = 121;
+		var filmInserted = new Film(title, year, duration);
+		entityManager.persist(filmInserted);
 		entityManager.flush();
-		int id = film.getId();
+		var id = filmInserted.getId();
 		// when
-		Film found =  filmRepo.findOne(id);
-		System.out.println(found);
+		var found =  filmRepo.getOne(id);
 		// then
-		assertThat(found)
-			.isEqualToComparingFieldByField(film);
+		assertAll(
+				()->assertEquals(id, found.getId()),
+				()->assertEquals(title,  found.getTitle()),
+				()->assertEquals(year,  found.getYear()),
+				()->assertEquals(duration,  found.getDuration())
+		);
 	}
 	
 	@Test
 	public void testFindAll() {
 		//given
-		Film film = new Film("Star Wars", 1977, 121);
+		var film = new Film("Star Wars", 1977, 121);
 		entityManager.persist(film);
 		film = new Film("Star Wars: Episode V - The Empire Strikes Back", 1980, 124);
 		entityManager.persist(film);
 		entityManager.flush();
 		// when
-		List<Film> found =  filmRepo.findAll();
-		System.out.println(found);
+		var found =  filmRepo.findAll();
 		// then
-		assertThat(found)
-			.hasSize(2);
+		assertEquals(2, found.size());
 	}
 	
 	@Test
@@ -91,11 +82,48 @@ public class TestFilmRepositoryDatabaseH2 {
 		Set<Film> found =  filmRepo.findByTitle(title);
 		System.out.println(found);
 		// then
-		assertThat(found)
-			.hasSize(2);
-		found.stream()
-			.map(Film::getTitle)
-			.forEach(t -> assertThat(t).isEqualTo(title));
+		assertAll(
+				()-> assertEquals(2, found.size()),
+				()-> assertAll(found.stream()
+						.map(Film::getTitle)
+						.map(t-> ()->assertEquals(title,t)))
+		);
+	}
+	
+	@Test
+	public void testFindByTitleAndYear() {
+		//given : 2 films with the same title but different year
+				// TODO
+		// when : find one of both
+				// TODO
+		// then : check you find the right one
+				// TODO
+		//fail("TODO : testFindByTitleAndYear");
+	}
+	
+	@Test
+	public void testFindByDurationGreaterThanEqual() {
+		//given : one duration,  2 films under this duration, one equal, 2 above
+				// TODO
+		// when : find all above or equal this duration
+				// TODO
+		// then : check you have the right number and the good ones
+				// TODO
+		//fail("TODO : testFindByDurationGreaterThanEqual");
+	}
+	
+	@Test
+	public void testFindByDurationLessThanEqual() {
+				// TODO
+		//fail("TODO : testFindByDurationGreaterThanEqual");
+	}
+
+
+	@Test 
+	public void testSave() {
+		// given : one new Film
+		// when : save the film with the repository
+		// then : the film has been saved and given a new ID
 	}
 
 }

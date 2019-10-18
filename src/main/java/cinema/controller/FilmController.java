@@ -1,6 +1,7 @@
 package cinema.controller;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.NavigableSet;
 import java.util.Set;
 
@@ -15,34 +16,33 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import cinema.persistence.entity.Film;
+import cinema.persistence.repository.FilmRepository;
 
 
-import cinema.dto.FilmDto;
-import cinema.service.IFilmService;
 
 @RestController
 @RequestMapping("/api/film")
 public class FilmController {
 	
 	@Autowired
-	IFilmService filmService;
+	FilmRepository filmRepo;
 	
 	@GetMapping
 	@ResponseBody
-	Set<FilmDto> findAll(){
-		return filmService.findAll();
+	List<Film> findAll(){
+		return filmRepo.findAll();
 	}
 	
 	@GetMapping(value="/{id}")
 	@ResponseBody
-	FilmDto findById(@PathVariable("id") Integer id) {
-		return filmService.findOne(id);
+	Film findById(@PathVariable("id") Integer id) {
+		return filmRepo.getOne(id);
 	}
 
 	@PostMapping
 	@ResponseBody
-	public FilmDto createFilm(@RequestBody FilmDto film) {
-				return filmService.createFilm(film);
-		
+	public Film createFilm(@RequestBody Film film) {
+		return filmRepo.save(film);
 	}
 }

@@ -7,9 +7,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 
 @Entity
+//@Table(name="movie")  // to map another table name
 public class Film {
 	private Integer id;
 	private String title;
@@ -41,7 +43,7 @@ public class Film {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="num_film")
+	//@Column(name="num_film") // to map another column name
 	public Integer getId() {
 		return id;
 	}
@@ -49,7 +51,7 @@ public class Film {
 		this.id = id;
 	}
 	
-	@Column(name="titre", nullable=false)
+	// @Column(name="titre", nullable=false) // different name + not null constraint
 	public String getTitle() {
 		return title;
 	}
@@ -57,7 +59,7 @@ public class Film {
 		this.title = title;
 	}
 	
-	@Column(name="annee")
+	//@Column(name="annee")
 	public Integer getYear() {
 		return year;
 	}
@@ -65,7 +67,7 @@ public class Film {
 		this.year = year;
 	}
 	
-	@Column(name="duree")
+	//@Column(name="duree")
 	public Integer getDuration() {
 		return duration;
 	}
