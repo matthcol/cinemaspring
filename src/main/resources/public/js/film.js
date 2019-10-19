@@ -1,54 +1,71 @@
+// configure AJAX dialog to be in JSON
 var urlFilmRestApi = "api/film"
+$.ajaxSetup({
+	contentType:"application/json; charset=utf-8"
+})
+	
 
-function displayFilms() {
-		$("#listFilm").empty()
-        $.getJSON(urlFilmRestApi)
-        .fail(function(){
-        	console.log("unable to access rest api:"+urlFilmRestApi)
-        })
-        .done(function(data){
-        	$.each( data, function( i, item ) {
-        		console.log("Film:" + item)
-        		var filmHTML = 	$( "<li></li>" ).text(
-        				item['title'] + '(' 
-        				+  item['year'] + ')'
-        				)
-        		$("#listFilm").append(filmHTML)
-        	})
-        })
+// display data in the HTML
+function displayOneFilmMore(film){
+	console.log("Display film:")
+	console.log(film)
+	var filmHTML = 	$("<li></li>").text(
+			film['title'] + '(' 
+			+  film['year'] + ')'
+			)
+	$("#listFilm").append(filmHTML)
 }
 
-function prepareSendFilm() {
-	$("#formFilm").submit(function(event){
-		// prevent default submit mechanism
-		event.preventDefault()	
-		// retrieve data from form as a JSon
-		var title = $(this).find( "input[name='title']").val()
-		var year = $(this).find( "input[name='year']").val()
-		var filmJSONObject = {"title":title, "year":year}
-		var filmJSONString = JSON.stringify(filmJSONObject)
-		console.log("Film to be sent:")
-		console.log(filmJSONString)
-		// send the JSON data to rest api in POST
-//		$.post(urlFilmRestApi, filmJSONString)
-//			.done(function(filmJSONResponse) {
-//					console.log("Film added:")
-//					console.log(filmJSONResponse)
-//					// refresh list film
-//					displayFilms()
-//					// TODO : instead retrieve response data 
-//					// and just add it to the html list
-//			})
-//			.fail(function(jqXHR, textStatus, errorThrown){
-//					console.log("Fail adding film:")
-//					console.log(textStatus)
-//					console.log(errorThrown)
-//			})	
+function displayFilms(films) {
+	$("#listFilm").empty()
+	$.each(films, function( i, film) {
+		displayOneFilmMore(film)
 	})
 }
 
-$(window).on('load',function(){
-	displayFilms()
-	prepareSendFilm()
-})
+function getAndDisplayAllFilms() {
+	// get data from the rest API
+    $.getJSON(urlFilmRestApi)
+    .fail(function(jqXHR, textStatus, errorThrown){
+    	console.log("unable to access rest api ("
+    			+urlFilmRestApi
+    			+"):" +textStatus)
+    })
+    .done(displayFilms)
+}
 
+// send the data from the form to the Rest API
+function postFilm(){		
+	// retrieve data from form as a JSon
+	var film = {
+			title: $('#title').val(),
+			year:  $('#year').val()
+	}
+	var filmJSON = JSON.stringify(film)
+	console.log("Film sent:")
+	console.log(film)
+	console.log(filmJSON)
+	// send the JSON data to rest api in POST
+	$.post(urlFilmRestApi,filmJSON)
+		.done(function(filmResponse) {
+				console.log("Film added:")
+				console.log(filmResponse)
+				// refresh list film
+				displayOneFilmMore(filmResponse)
+		})
+		.fail(function(jqXHR, textStatus, errorThrown){
+				console.log("Fail adding film:"+textStatus)
+		})	
+}
+
+// After the page is loaded :
+// display films (GET)
+// and attach event to submit form (prepare POST)
+$(window).on('load',function(){
+	getAndDisplayAllFilms()
+	$("#formFilm").submit(function(event) {
+		// prevent default submit mechanism
+		event.preventDefault()
+		postFilm()
+	})
+})

@@ -1,36 +1,39 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Cinema</title>
+	<meta charset="UTF-8">
+	<title>Cinema</title>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+	  		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+	  		crossorigin="anonymous"></script>
+	<script src="js/film.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 <body>
-<header>
-<script
-  src="https://code.jquery.com/jquery-3.4.1.min.js"
-  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-  crossorigin="anonymous"></script>
-<script src="js/film.js"></script>
-<link rel="stylesheet" type="text/css" href="css/main.css">
-</header>
-<main>
-<section>
-<h1>Films</h1>
-<!-- insert list films in JS consuming api Rest -->
-<ul id="listFilm">
+	<header>
+	</header>
 	
-</ul>
-</section>
-<section>
-<h3>Suggestions</h3>
-<!-- construct JSON film and send it to api rest -->
-<form id="formFilm">
-<p>Titre : <input id="title" name="title" type="text"></p>
-<p>Année : <input id="year" name="year" type="number"></p>
-<p><input value="Ajouter" type="submit"></p>
-</form>
-</section>
-</main>
-<footer></footer>
+	<main>
+	
+		<section>
+		<h1>Films</h1>
+		<!-- insert list films in JS consuming api Rest -->
+		<ul id="listFilm">	
+		</ul>
+		</section>
+		
+		<section>
+		<h3>Add favorite film</h3>
+		<!-- construct JSON film and send it to api rest -->
+		<form id="formFilm">
+		<p>Title: <input id="title" name="title" type="text"></p>
+		<p>Year: <input id="year" name="year" type="number"></p>
+		<p><input value="Add" type="submit"></p>
+		</form>
+		</section>
+	</main>
+	
+	<footer>
+	</footer>
 </body>
 </html>
